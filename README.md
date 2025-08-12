@@ -55,6 +55,7 @@ pip install -r requirements.txt
 4️⃣ Run the project
 
 python main.py
+
 📸 Screenshots & Demos
 
 📬 Contact
