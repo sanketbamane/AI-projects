@@ -43,12 +43,15 @@ Each project is self-contained with its own dataset (synthetic or sample), requi
 
 git clone https://github.com/sanketbamane/ai-projects.git
 cd ai-projects
+
 2️⃣ Navigate to a project folder
 
 cd 1_ai_resume_screener
+
 3️⃣ Install dependencies
 
 pip install -r requirements.txt
+
 4️⃣ Run the project
 
 python main.py
