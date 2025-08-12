@@ -42,6 +42,7 @@ Each project is self-contained with its own dataset (synthetic or sample), requi
 1️⃣ Clone the repository
 
 git clone https://github.com/sanketbamane/ai-projects.git
+
 cd ai-projects
 
 2️⃣ Navigate to a project folder
