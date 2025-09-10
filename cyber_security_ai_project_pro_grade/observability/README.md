@@ -1,0 +1,3 @@
+- Prometheus available at http://localhost:9090
+- Grafana available at http://localhost:3000 (admin:admin)
+- Import the provided dashboard JSON into Grafana if not auto-loaded.

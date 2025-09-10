@@ -1,0 +1,81 @@
+version: '3.8'
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.0
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    ports: ['2181:2181']
+
+  kafka:
+    image: confluentinc/cp-kafka:7.4.0
+    depends_on: ['zookeeper']
+    ports: ['9092:9092']
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: threatdb
+      POSTGRES_USER: threat
+      POSTGRES_PASSWORD: threatpass
+    ports: ['5432:5432']
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:22.0.1
+    command: start-dev
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: keycloak
+    ports: ['8080:8080']
+
+  mlflow:
+    image: quay.io/mlflow/mlflow:2.6.2
+    environment:
+      MLFLOW_TRACKING_URI: http://0.0.0.0:5000
+    command: mlflow server --backend-store-uri ./mlflow --default-artifact-root ./mlflow/artifacts --host 0.0.0.0 --port 5000
+    ports: ['5000:5000']
+    volumes:
+      - ./mlflow:/mlflow
+
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./observability/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports: ['9090:9090']
+
+  grafana:
+    image: grafana/grafana:9.5.5
+    ports: ['3000:3000']
+    volumes:
+      - ./observability/grafana_dashboard.json:/var/lib/grafana/dashboards/dashboard.json:ro
+
+  api:
+    build: .
+    command: ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "api.main:app", "--bind", "0.0.0.0:8000", "--workers", "2"]
+    ports: ['8000:8000']
+    depends_on: ['kafka', 'postgres', 'mlflow', 'keycloak', 'prometheus']
+    environment:
+      - KAFKA_BOOTSTRAP=kafka:9092
+      - POSTGRES_DSN=postgresql://threat:threatpass@postgres:5432/threatdb
+      - JWT_SECRET=change-me
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - OIDC_ISSUER=http://keycloak:8080
+      - OIDC_INTROSPECT=http://keycloak:8080/realms/master/protocol/openid-connect/token/introspect
+      - OIDC_CLIENT_ID=example-client
+      - OIDC_CLIENT_SECRET=example-secret
+
+  model-service:
+    build: .
+    command: ["python", "ml/model_service.py"]
+    ports: ['8501:8501']
+    depends_on: ['mlflow']
+
+volumes:
+  pgdata:
