@@ -1,0 +1,49 @@
+{
+  "depot_index": 0,
+  "locations": [
+    {
+      "id": 0,
+      "lat": 28.7041,
+      "lon": 77.1025,
+      "demand": 0
+    },
+    {
+      "id": 1,
+      "lat": 28.5355,
+      "lon": 77.391,
+      "demand": 1
+    },
+    {
+      "id": 2,
+      "lat": 28.4595,
+      "lon": 77.0266,
+      "demand": 1
+    },
+    {
+      "id": 3,
+      "lat": 28.4089,
+      "lon": 77.3178,
+      "demand": 1
+    },
+    {
+      "id": 4,
+      "lat": 28.9845,
+      "lon": 77.7064,
+      "demand": 1
+    }
+  ],
+  "vehicles": [
+    {
+      "id": "veh_1",
+      "start_index": 0,
+      "capacity": 3
+    },
+    {
+      "id": "veh_2",
+      "start_index": 0,
+      "capacity": 3
+    }
+  ],
+  "metric": "distance",
+  "async_mode": true
+}
