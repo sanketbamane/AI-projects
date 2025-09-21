@@ -1,0 +1,12 @@
+,Unique id,channel_name,category,Sub-category,Customer Remarks,Order_id,order_date_time,Issue_reported at,issue_responded,Survey_response_Date,Customer_City,Product_category,Item_price,connected_handling_time,Agent_name,Supervisor,Manager,Tenure Bucket,Agent Shift,CSAT Score
+count,20000,20000,20000,20000,6781,15758,4031,20000,20000,20000,4001,4028,4030.0,52.0,20000,20000,20000,20000,20000,20000.0
+unique,20000,3,12,55,4734,15758,3786,14757,14397,31,960,9,,,1371,40,6,5,5,
+top,fc42f862-7521-472c-b569-8bce866ebe8c,Inbound,Returns,Reverse Pickup Enquiry,Good ,111a13cc-161e-4605-bf68-4e85d2e780c8,03/08/2023 12:06,27/08/2023 10:08,28/08/2023 00:00,28-Aug-23,HYDERABAD,Electronics,,,Wendy Taylor,Carter Park,John Smith,>90,Morning,
+freq,1,15852,10259,5165,289,1,4,8,790,802,171,1104,,,96,1010,5916,7205,9722,
+mean,,,,,,,,,,,,,5961.563523573201,441.7307692307692,,,,,,4.24525
+std,,,,,,,,,,,,,13431.778454454578,199.33537759309309,,,,,,1.3745533483082304
+min,,,,,,,,,,,,,1.0,0.0,,,,,,1.0
+25%,,,,,,,,,,,,,399.0,303.75,,,,,,4.0
+50%,,,,,,,,,,,,,999.0,433.0,,,,,,5.0
+75%,,,,,,,,,,,,,2999.0,535.0,,,,,,5.0
+max,,,,,,,,,,,,,151990.0,1025.0,,,,,,5.0
