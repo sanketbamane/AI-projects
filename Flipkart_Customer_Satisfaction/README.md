@@ -73,7 +73,9 @@ pip install -r requirements.txt
 
 🧑‍💻 Usage
 🔹 Train the Model
-python src/train.py
+python src/train.py --data-path data/flipkart.csv
+🔹 For complete dataset training
+python src/train.py --data-path data/flipkart.csv --project-root . --sample 0 --max-features 3000 --n-estimators 100 --max-depth 20
 
 🔹 Run Predictions
 python src/main.py
