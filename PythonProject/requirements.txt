@@ -1,0 +1,6 @@
+pyttsx3>=2.90
+SpeechRecognition>=3.8.1
+# Optional but recommended for offline ASR
+vosk>=0.3.42
+# For microphone support; on Windows install via pipwin to avoid build issues
+pyaudio>=0.2.11
