@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Assistant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app" class="glass-container">
+
+    <!-- Draggable title bar -->
+    <div class="title-bar drag-handle">
+      <div class="title-bar-left">
+        <div class="app-logo">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" stroke="url(#grad)" stroke-width="2"/>
+            <path d="M8 12l3 3 5-5" stroke="url(#grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <defs>
+              <linearGradient id="grad" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#6366f1"/>
+                <stop offset="100%" stop-color="#a855f7"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <span class="app-name">Cluely <span class="app-badge">AI</span></span>
+      </div>
+      <div class="title-bar-center">
+        <div class="status-pill">
+          <div class="status-dot" id="status-dot"></div>
+          <span class="timer" id="timer">00:00</span>
+          <div class="shot-count" id="screenshot-count">0</div>
+        </div>
+      </div>
+      <div class="title-bar-right">
+        <button id="hide-btn" class="tb-btn" title="Emergency Hide (Ctrl+Alt+Shift+X)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+            <line x1="3" y1="3" x2="21" y2="21"/>
+          </svg>
+        </button>
+        <button id="resize-btn" class="tb-btn tb-resize" title="Resize Window (cycle: Small → Medium → Large → Fullscreen)">
+          <svg id="resize-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 3 21 3 21 9"/>
+            <polyline points="9 21 3 21 3 15"/>
+            <line x1="21" y1="3" x2="14" y2="10"/>
+            <line x1="3" y1="21" x2="10" y2="14"/>
+          </svg>
+        </button>
+        <button id="close-app-btn" class="tb-btn tb-close" title="Close">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Main layout -->
+    <div class="layout">
+
+      <!-- Sidebar actions -->
+      <div class="sidebar">
+        <button id="voice-toggle" class="sidebar-btn voice-btn" title="Toggle Voice (Ctrl+Alt+Shift+V)">
+          <svg class="sb-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <line x1="12" y1="19" x2="12" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <line x1="8" y1="23" x2="16" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <span class="sb-label">Mic</span>
+        </button>
+
+        <button id="screenshot-btn" class="sidebar-btn" title="Screenshot (Ctrl+Alt+Shift+S)">
+          <svg class="sb-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M9 2 7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
+          </svg>
+          <span class="sb-label">Snap</span>
+        </button>
+
+        <button id="suggest-btn" class="sidebar-btn" title="Suggest Response">
+          <svg class="sb-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          <span class="sb-label">Suggest</span>
+        </button>
+        
+        <button id="tts-toggle" class="sidebar-btn" title="Toggle AI Voice (TTS)">
+          <svg class="sb-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+          </svg>
+          <span class="sb-label">Speak</span>
+        </button>
+
+        <div class="voice-selector-container">
+          <select id="voice-select" class="voice-select" title="Select AI Voice">
+            <option value="onyx">Onyx (Deep)</option>
+            <option value="alloy">Alloy (Neutral)</option>
+            <option value="echo">Echo (Crisp)</option>
+            <option value="fable">Fable (British)</option>
+            <option value="nova">Nova (Bright)</option>
+            <option value="shimmer">Shimmer (Soft)</option>
+          </select>
+          <button id="test-tts-btn" class="test-tts-btn">Test Voice</button>
+        </div>
+
+        <audio id="tts-audio" style="display: none;"></audio>
+
+
+        <div class="sidebar-divider"></div>
+
+        <button id="clear-btn" class="sidebar-btn danger-btn" title="Clear All">
+          <svg class="sb-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+          </svg>
+          <span class="sb-label">Clear</span>
+        </button>
+      </div>
+
+      <!-- Chat area -->
+      <div class="chat-area">
+
+        <!-- Chat messages -->
+        <div id="chat-container" class="chat-container">
+          <div id="chat-messages" class="chat-messages">
+            <!-- Welcome message -->
+            <div class="welcome-message">
+              <div class="welcome-glow"></div>
+              <div class="welcome-icon">✨</div>
+              <div class="welcome-title">Cluely AI is ready</div>
+              <div class="welcome-sub">Speak (Vosk, Google, or Groq), screenshot, or type — using local Vosk for instant mic input</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Input area -->
+        <div class="input-area">
+          <div class="input-wrapper">
+            <input 
+              type="text" 
+              id="manual-input" 
+              class="chat-input" 
+              placeholder="Ask AI anything…"
+              autocomplete="off"
+              spellcheck="false"
+            />
+            <button id="analyze-btn" class="send-btn" title="Ask AI (Ctrl+Alt+Shift+A)">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"/>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+            </button>
+          </div>
+          <div class="input-hints">
+            <span class="hint-chip">Ctrl+Alt+Shift+<b>S</b> Screenshot</span>
+            <span class="hint-chip">Ctrl+Alt+Shift+<b>V</b> Voice</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom copy bar -->
+    <div class="bottom-bar">
+      <button id="copy-btn" class="bottom-btn" title="Copy Last Response">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+        </svg>
+        Copy last answer
+      </button>
+      <div id="status-text" class="status-text"></div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+      <div class="loading-content">
+        <div class="spinner-ring"></div>
+        <div class="loading-text">Analyzing screen…</div>
+      </div>
+    </div>
+
+    <!-- Emergency Overlay -->
+    <div id="emergency-overlay" class="emergency-overlay hidden">
+      <div class="emergency-message">HIDDEN</div>
+    </div>
+
+    <!-- Legacy results panel (hidden) -->
+    <div id="results-panel" class="results-panel hidden">
+      <div class="results-header">
+        <div class="results-title"><span class="ai-response-icon">✨</span><span>AI Response</span></div>
+        <div class="results-actions">
+          <button id="close-results" class="close-btn" title="Close">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.11 5.7a1 1 0 1 0-1.42 1.42L10.59 12l-4.9 4.89a1 1 0 0 0 1.42 1.42L12 13.41l4.89 4.9a1 1 0 0 0 1.42-1.42L13.41 12l4.9-4.89a1 1 0 0 0 0-1.4Z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="results-content"><div id="result-text" class="result-text"></div></div>
+    </div>
+
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
