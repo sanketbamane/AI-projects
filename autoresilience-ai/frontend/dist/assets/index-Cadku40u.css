@@ -1,0 +1,1 @@
+@tailwind base;@tailwind components;@tailwind utilities;body{background-color:#0000;background-image:linear-gradient(#020617eb,#020617eb),url(/images/network-bg.svg);background-position:50%;background-repeat:repeat,repeat;background-size:cover;background-attachment:fixed;background-origin:padding-box,padding-box;background-clip:border-box,border-box;min-height:100vh;margin:0}
